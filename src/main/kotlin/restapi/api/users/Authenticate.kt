@@ -27,6 +27,7 @@ fun createJWTToken(user: User, secretKey: SecretKey): Either<ApiError, Token> {
     val expires = LocalDateTime.now().plusHours(2)
     val jwt = Jwts.builder()
         .setId(user.id.toString())
+        .setSubject(user.roles.toString())
         .setExpiration(expires.toDate())
         .signWith(secretKey)
         .compact()

@@ -49,6 +49,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.10.7'
 
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.6'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
 
     // TESTS
     testCompile 'io.kotest:kotest-assertions-arrow-jvm:4.0.3'
