@@ -12,7 +12,6 @@ val errorResponseLens = Body.auto<ErrorResponse>().toLens()
 
 inline fun <reified T : Any> ok(obj: T): Response = Body.auto<T>().toLens().inject(obj, Response(Status.OK))
 
-
 fun respond(apiError: ApiError): Response {
     return when (apiError) {
         is ApiError.ValidationError -> errorResponseLens.inject(ErrorResponse(apiError.error), Response(
@@ -32,26 +31,7 @@ fun respond(apiError: ApiError): Response {
         is ApiError.InsufficientPrivileges -> errorResponseLens.inject(ErrorResponse("Insufficient privileges"), Response(
             Status.UNAUTHORIZED)
         )
-        is ApiError.InternalError -> errorResponseLens.inject(ErrorResponse(apiError.message), Response(Status.INTERNAL_SERVER_ERROR))
-        is ApiError.UserAlreadyExists -> errorResponseLens.inject(ErrorResponse("User already exists"), Response(
-            Status.BAD_REQUEST)
-        )
-        is ApiError.WorkspaceAlreadyExists -> errorResponseLens.inject(ErrorResponse("Workspace already exists"), Response(
-            Status.BAD_REQUEST)
-        )
-        is ApiError.WorkspaceNotFound -> errorResponseLens.inject(ErrorResponse("Workspace not found"), Response(
-            Status.BAD_REQUEST)
-        )
-        is ApiError.IOError -> errorResponseLens.inject(ErrorResponse("I/O error occurred"), Response(Status.INTERNAL_SERVER_ERROR))
-        is ApiError.IndexingError -> errorResponseLens.inject(ErrorResponse("Indexing error"), Response(Status.INTERNAL_SERVER_ERROR))
-        is ApiError.SearchError -> errorResponseLens(ErrorResponse(("Search error")), Response(Status.INTERNAL_SERVER_ERROR))
-        is ApiError.FolderNotFound -> errorResponseLens(ErrorResponse("Folder not found"), Response(Status.NOT_FOUND))
-        is ApiError.DocumentNotFound -> errorResponseLens(ErrorResponse("Document not found"), Response(Status.NOT_FOUND))
-        is ApiError.JournalEntryNotFound -> errorResponseLens(ErrorResponse("Journal entry not found"), Response(
-            Status.NOT_FOUND)
-        )
-        is ApiError.BookmarkNotFound -> errorResponseLens(ErrorResponse("Bookmark not found"), Response(Status.NOT_FOUND))
-        is ApiError.TodoNotFound -> errorResponseLens(ErrorResponse("Todo not found"), Response(Status.NOT_FOUND))
+
         else -> errorResponseLens(ErrorResponse("Internal error"), Response(Status.INTERNAL_SERVER_ERROR))
     }
 }
